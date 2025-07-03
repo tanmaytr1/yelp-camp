@@ -1,0 +1,70 @@
+<%- include('partials/header.ejs', { title: "New Page" }) %>
+
+    <body>
+        <%- include('partials/navbar.ejs') %>
+
+            <div class="min-h-screen flex items-center justify-center px-4 bg-gray-100">
+                <div class="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Add a New Campground</h2>
+                    <form action="/campgrounds" method="POST" class="space-y-4">
+                        <div>
+                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                            <input type="text" id="title" name="campground[title]"
+                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="image" class="block text-sm font-medium text-gray-700">Image URL</label>
+                            <input type="text" id="image" name="campground[image]"
+                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea id="description" name="campground[description]"
+                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"></textarea>
+                        </div>
+                        <div>
+                            <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                            <input type="number" id="price" name="campground[price]"
+                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                        </div>
+                        <div>
+                            <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="location" name="campground[location]"
+                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold shadow-md">
+                            Add Campground
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+
+            <%- include('partials/footer.ejs') %>
+
+                <script>
+                    const form = document.querySelector('form');
+                    const titleInput = document.querySelector('#title');
+                    const imageInput = document.querySelector('#image');
+                    const descriptionInput = document.querySelector('#description');
+                    const priceInput = document.querySelector('#price');
+                    const locationInput = document.querySelector('#location');
+
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'text-red-500 text-sm mt-2';
+                    form.appendChild(errorMessage);
+
+                    form.addEventListener('submit', function (event) {
+                        errorMessage.textContent = '';
+
+                        if (!titleInput.value || !imageInput.value || !descriptionInput.value || !priceInput.value || !locationInput.value) {
+                            event.preventDefault();
+                            errorMessage.textContent = 'All fields are required.';
+                        } else if (isNaN(priceInput.value) || priceInput.value <= 0) {
+                            event.preventDefault();
+                            errorMessage.textContent = 'Price must be a positive number.';
+                        }
+                    });
+                </script>
+    </body>

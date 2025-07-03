@@ -1,0 +1,69 @@
+<%- include('partials/header.ejs', { title: "Edit Page" }) %>
+
+    <body>
+        <%- include('partials/navbar.ejs') %>
+
+            <div class="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+                <h2 class="text-2xl font-bold text-gray-700 mb-4">Edit Campground</h2>
+                <form action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST" class="space-y-4">
+                    <div>
+                        <label for="title" class="block text-gray-600">Title</label>
+                        <input type="text" id="title" name="campground[title]" value="<%= campground.title %>"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+                    <div>
+                        <label for="location" class="block text-gray-600">Location</label>
+                        <input type="text" id="location" name="campground[location]" value="<%= campground.location %>"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+
+                    <div>
+                        <label for="image" class="block text-gray-600">Image URL</label>
+                        <input type="text" id="image" name="campground[image]" value="<%= campground.image %>"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+                    <div>
+                        <label for="description" class="block text-gray-600">Description</label>
+                        <textarea id="description" name="campground[description]"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"><%= campground.description %></textarea>
+                    </div>
+                    <div>
+                        <label for="price" class="block text-gray-600">Price</label>
+                        <input type="number" id="price" name="campground[price]" value="<%= campground.price %>"
+                            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    </div>
+                    <div class="flex space-x-4">
+                        <button type="submit"
+                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Submit</button>
+                        <a href="/campgrounds/<%= campground._id %>"
+                            class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Back</a>
+                    </div>
+                </form>
+            </div>
+            <script>
+                const form = document.querySelector('form');
+                const titleInput = document.querySelector('#title');
+                const imageInput = document.querySelector('#image');
+                const descriptionInput = document.querySelector('#description');
+                const priceInput = document.querySelector('#price');
+                const locationInput = document.querySelector('#location');
+
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'text-red-500 text-sm mt-2';
+                form.appendChild(errorMessage);
+
+                form.addEventListener('submit', function (event) {
+                    errorMessage.textContent = '';
+
+                    if (!titleInput.value || !imageInput.value || !descriptionInput.value || !priceInput.value || !locationInput.value) {
+                        event.preventDefault();
+                        errorMessage.textContent = 'All fields are required.';
+                    } else if (isNaN(priceInput.value) || priceInput.value <= 0) {
+                        event.preventDefault();
+                        errorMessage.textContent = 'Price must be a positive number.';
+                    }
+                });
+            </script>
+    </body>
+
+    <%- include('partials/footer.ejs') %>

@@ -1,0 +1,105 @@
+<%- include('partials/header.ejs', { title: "Show Page" }) %>
+
+    <body class="bg-gradient-to-br from-gray-100 to-blue-50 text-gray-900 min-h-screen">
+        <%- include('partials/navbar.ejs') %>
+
+            <main class="max-w-6xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- LEFT: Campground Details + Review Form -->
+                    <div class="w-full lg:w-2/3 bg-white p-6 rounded-2xl shadow-xl space-y-6">
+                        <img src="<%= campground.image %>" alt="<%= campground.title %>"
+                            class="w-full h-64 object-cover rounded-lg shadow-md">
+
+                        <h1 class="text-3xl font-extrabold text-gray-800">
+                            <%= campground.title %>
+                        </h1>
+                        <h2 class="text-lg text-gray-500">
+                            <%= campground.location %>
+                        </h2>
+
+                        <p class="text-2xl font-semibold text-green-700">$<%= campground.price %>
+                        </p>
+
+                        <p class="text-gray-700 text-base leading-relaxed">
+                            <%= campground.description %>
+                        </p>
+
+                        <!-- Edit/Delete/Back Buttons -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <a href="/campgrounds/<%= campground._id %>/edit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-lg text-center transition">
+                                ✏️ Edit
+                            </a>
+                            <form action="/campgrounds/<%= campground._id %>?_method=delete" method="POST">
+                                <button type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-4 rounded-lg w-full transition">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+                            <a href="/campgrounds"
+                                class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 px-4 rounded-lg text-center transition">
+                                ⬅️ Back to All
+                            </a>
+                        </div>
+
+                        <!-- Review Form (inside main box) -->
+                        <div class="pt-6 border-t mt-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Leave a Review</h3>
+                            <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="space-y-4">
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <div class="w-full sm:w-36">
+                                        <label for="rating" class="text-sm font-medium text-gray-700">Rating</label>
+                                        <select name="review[rating]" id="rating"
+                                            class="mt-1 block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                            <option value="" disabled selected>–</option>
+                                            <option value="1">⭐</option>
+                                            <option value="2">⭐⭐</option>
+                                            <option value="3">⭐⭐⭐</option>
+                                            <option value="4">⭐⭐⭐⭐</option>
+                                            <option value="5">⭐⭐⭐⭐⭐</option>
+                                        </select>
+                                    </div>
+                                    <div class="w-full">
+                                        <label for="body" class="block text-sm font-medium text-gray-700">Review</label>
+                                        <textarea name="review[body]" id="body" rows="4"
+                                            class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                            placeholder="Share your experience..." required></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                    Submit
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Displayed Reviews -->
+                    <div class="w-full lg:w-1/3 bg-white p-6 rounded-2xl shadow-xl h-fit space-y-4">
+                        <h3 class="text-xl font-semibold text-gray-800">Reviews</h3>
+                        <% if (campground.reviews.length===0) { %>
+                            <p class="text-gray-500 italic">No reviews yet. Be the first to leave one!</p>
+                            <% } %>
+                                <% for (let review of campground.reviews) { %>
+                                    <div class="bg-gray-100 p-4 rounded-md shadow-sm">
+                                        <p class="text-yellow-500 text-sm mb-1">
+                                            <%= '⭐' .repeat(review.rating) + '☆' .repeat(5 - review.rating) %>
+                                        </p>
+                                        <p class="text-gray-800 text-sm">
+                                            <%= review.body %>
+                                        </p>
+                                        <form
+                                            action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                            method="POST">
+                                            <button type="submit" class="text-red-600 hover:text-red-800 text-sm mt-2">
+                                                🗑️ Delete Review
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <% } %>
+                    </div>
+                </div>
+            </main>
+
+            <%- include('partials/footer.ejs') %>
+    </body>

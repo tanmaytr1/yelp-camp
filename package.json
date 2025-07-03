@@ -1,0 +1,22 @@
+{
+  "name": "yelp-camp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i public/tailwind.css -o public/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.15",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^4.21.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.11.0",
+    "morgan": "^1.10.0",
+    "tailwindcss": "^4.0.15"
+  }
+}

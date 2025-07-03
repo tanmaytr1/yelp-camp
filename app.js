@@ -11,6 +11,7 @@ const morgan = require("morgan");
 const Review = require("./models/review");
 const campgrounds = require("./routes/campground");
 const reviews = require("./routes/reviews");
+const session = require("express-session");
 
 // app.use(morgan("dev"));
 // app.use((req, res, next) => {
@@ -35,6 +36,19 @@ app.use(express.urlencoded({ extended: true })); // Middleware to parse the body
 app.use(methodOverride("_method"));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie:{
+      httpOnly: true,
+      expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 7 days
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    }
+};
+app.use(session(sessionConfig));
+
 // Routes
 app.get("/", (req, res) => {
   res.render("home.ejs");

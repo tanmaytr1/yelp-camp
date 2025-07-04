@@ -1,42 +1,67 @@
 <%- include('../campgrounds/partials/header.ejs', { title: "Login" }) %>
+    <%# OR { title: "Register" } for register.ejs %>
 
-    <body
-        class="bg-gradient-to-br from-gray-100 to-blue-50 text-gray-900 min-h-screen flex items-center justify-center">
+        <body class="bg-gradient-to-br from-gray-100 to-blue-50 text-gray-900 min-h-screen flex flex-col">
+            <%# Changed body to flex-col to stack children vertically %>
 
-        <div class="w-full max-w-md">
+                <%- include('../campgrounds/partials/navbar.ejs') %>
+                    <%# Navbar is now a direct child and will sit at the top %>
 
-            <div class="mb-6"> <%- include('../campgrounds/partials/flash.ejs') %>
-            </div>
+                        <div class="flex-grow flex items-center justify-center">
+                            <%# This new wrapper takes up available space and centers its content (flash + form) %>
 
-            <main class="p-6 bg-white rounded-2xl shadow-xl">
-                <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-8">Login for YelpCamp</h1>
+                                <div class="w-full max-w-md">
+                                    <div class="mb-6">
+                                        <%- include('../campgrounds/partials/flash.ejs') %>
+                                    </div>
 
-                <form action="/login" method="POST" class="space-y-6">
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                        <input type="text" id="username" name="username" placeholder="Choose a username" required
-                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
+                                    <main class="p-6 bg-white rounded-2xl shadow-xl">
+                                        <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-8">Login for
+                                            YelpCamp</h1>
+                                        <%# OR Register for register.ejs %>
 
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required
-                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
+                                            <form action="/login" method="POST" class="space-y-6">
+                                                <%# OR /register for register.ejs %>
+                                                    <div>
+                                                        <label for="username"
+                                                            class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                                                        <input type="text" id="username" name="username"
+                                                            placeholder="Choose a username" required
+                                                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                                    </div>
 
-                    <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition">
-                        Login
-                    </button>
-                </form>
+                                                    <div>
+                                                        <label for="password"
+                                                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                                        <input type="password" id="password" name="password"
+                                                            placeholder="Enter your password" required
+                                                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                                                    </div>
 
-                <p class="text-center text-sm text-gray-600 mt-6">
-                    Don't have an account? <a href="/register" class="text-blue-600 hover:underline">Register here</a>.
-                </p>
-            </main>
+                                                    <button type="submit"
+                                                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition">
+                                                        Login
+                                                        <%# OR Register for register.ejs %>
+                                                    </button>
+                                            </form>
 
-        </div>
+                                            <p class="text-center text-sm text-gray-600 mt-6">
+                                                Don't have an account? <a href="/register"
+                                                    class="text-blue-600 hover:underline">Register
+                                                    here</a>.
+                                                <%# OR Already have an account? <a href="/login"
+                                                    class="text-blue-600 hover:underline">Login here</a>. %>
+                                            </p>
+                                    </main>
 
-    </body>
+                                </div>
+                        </div>
+                        <%# The new wrapper ends here %>
 
-    </html>
+                            <%- include('../campgrounds/partials/footer.ejs') %>
+                                <%# Corrected typo: .ejs instead of .js %>
+                                    <%# Footer is now a direct child and will stick to the bottom %>
+
+        </body>
+
+        </html>

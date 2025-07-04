@@ -1,70 +1,99 @@
-<%- include('partials/header.ejs', { title: "New Page" }) %>
+<%- include('partials/header.ejs', { title: "New Campground" }) %>
 
-    <body>
-        <%- include('partials/navbar.ejs') %>
+    <body class="bg-gradient-to-br from-gray-100 to-blue-50 text-gray-900 min-h-screen flex flex-col">
+        <%# Body stacks content vertically, fills screen height %>
 
-            <div class="min-h-screen flex items-center justify-center px-4 bg-gray-100">
-                <div class="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
-                    <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Add a New Campground</h2>
-                    <form action="/campgrounds" method="POST" class="space-y-4">
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-                            <input type="text" id="title" name="campground[title]"
-                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
-                        </div>
-                        <div>
-                            <label for="image" class="block text-sm font-medium text-gray-700">Image URL</label>
-                            <input type="text" id="image" name="campground[image]"
-                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
-                        </div>
-                        <div>
-                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                            <textarea id="description" name="campground[description]"
-                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"></textarea>
-                        </div>
-                        <div>
-                            <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
-                            <input type="number" id="price" name="campground[price]"
-                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
-                        </div>
-                        <div>
-                            <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-                            <input type="text" id="location" name="campground[location]"
-                                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm">
-                        </div>
-                        <button type="submit"
-                            class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold shadow-md">
-                            Add Campground
-                        </button>
-                    </form>
-                </div>
-            </div>
+            <%- include('partials/navbar.ejs') %>
 
+                <%# Main content area: grows to fill space, centers horizontally, aligns content to top vertically %>
+                    <div class="flex-grow flex justify-center items-start py-8">
+                        <%# py-8 adds vertical spacing from navbar/footer %>
 
-            <%- include('partials/footer.ejs') %>
+                            <div class="w-full max-w-lg bg-white p-6 rounded-lg shadow-md mx-auto">
+                                <%# Form container: takes full width up to max-lg, centered horizontally %>
 
-                <script>
-                    const form = document.querySelector('form');
-                    const titleInput = document.querySelector('#title');
-                    const imageInput = document.querySelector('#image');
-                    const descriptionInput = document.querySelector('#description');
-                    const priceInput = document.querySelector('#price');
-                    const locationInput = document.querySelector('#location');
+                                    <div class="mb-6">
+                                        <%- include('partials/flash.ejs') %>
+                                    </div>
 
-                    const errorMessage = document.createElement('div');
-                    errorMessage.className = 'text-red-500 text-sm mt-2';
-                    form.appendChild(errorMessage);
+                                    <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Add a New
+                                        Campground</h2>
+                                    <form action="/campgrounds" method="POST" class="space-y-4" novalidate>
+                                        <%# novalidate to use custom JS validation if desired %>
+                                            <div>
+                                                <label for="title"
+                                                    class="block text-sm font-medium text-gray-700">Title</label>
+                                                <input type="text" id="title" name="campground[title]"
+                                                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                    required>
+                                            </div>
+                                            <div>
+                                                <label for="image" class="block text-sm font-medium text-gray-700">Image
+                                                    URL</label>
+                                                <input type="text" id="image" name="campground[image]"
+                                                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                    required>
+                                            </div>
+                                            <div>
+                                                <label for="description"
+                                                    class="block text-sm font-medium text-gray-700">Description</label>
+                                                <textarea id="description" name="campground[description]"
+                                                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                    required></textarea>
+                                            </div>
+                                            <div>
+                                                <label for="price"
+                                                    class="block text-sm font-medium text-gray-700">Price</label>
+                                                <input type="number" id="price" name="campground[price]" min="0.01"
+                                                    step="0.01"
+                                                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                    required>
+                                            </div>
+                                            <div>
+                                                <label for="location"
+                                                    class="block text-sm font-medium text-gray-700">Location</label>
+                                                <input type="text" id="location" name="campground[location]"
+                                                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                    required>
+                                            </div>
+                                            <button type="submit"
+                                                class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold shadow-md">
+                                                Add Campground
+                                            </button>
+                                    </form>
+                            </div>
+                    </div>
 
-                    form.addEventListener('submit', function (event) {
-                        errorMessage.textContent = '';
+                    <%- include('partials/footer.ejs') %>
 
-                        if (!titleInput.value || !imageInput.value || !descriptionInput.value || !priceInput.value || !locationInput.value) {
-                            event.preventDefault();
-                            errorMessage.textContent = 'All fields are required.';
-                        } else if (isNaN(priceInput.value) || priceInput.value <= 0) {
-                            event.preventDefault();
-                            errorMessage.textContent = 'Price must be a positive number.';
-                        }
-                    });
-                </script>
+                        <script>
+                            const form = document.querySelector('form');
+                            const errorMessage = document.createElement('div');
+                            errorMessage.className = 'text-red-500 text-sm mt-2';
+                            form.appendChild(errorMessage);
+
+                            form.addEventListener('submit', function (event) {
+                                errorMessage.textContent = ''; // Clear previous errors
+
+                                // Use HTML5's built-in validation API
+                                if (!form.checkValidity()) {
+                                    event.preventDefault(); // Prevent form submission if invalid
+
+                                    // Provide a general error message if HTML5 validation fails.
+                                    // For more specific messages per field, you'd iterate through invalid elements.
+                                    if (document.querySelector('input:invalid, textarea:invalid')) {
+                                        const invalidElement = document.querySelector('input:invalid, textarea:invalid');
+                                        if (invalidElement.hasAttribute('required') && !invalidElement.value) {
+                                            errorMessage.textContent = 'All fields are required.';
+                                        } else if (invalidElement.id === 'price' && (isNaN(invalidElement.value) || parseFloat(invalidElement.value) <= 0)) {
+                                            errorMessage.textContent = 'Price must be a positive number.';
+                                        } else {
+                                            errorMessage.textContent = 'Please correct the highlighted fields.';
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
     </body>
+
+    </html>

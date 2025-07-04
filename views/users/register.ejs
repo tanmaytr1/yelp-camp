@@ -1,48 +1,103 @@
-<%- include('../campgrounds/partials/header.ejs', { title: "Register" }) %>
+<%- include('partials/header.ejs', { title: "New Campground" }) %>
+    <%# Assuming this file is in views/campgrounds, so partials paths are relative %>
 
-    <body
-        class="bg-gradient-to-br from-gray-100 to-blue-50 text-gray-900 min-h-screen flex items-center justify-center">
+        <body class="bg-gradient-to-br from-gray-100 to-blue-50 text-gray-900 min-h-screen flex flex-col">
+            <%# Body is a flex column to stack navbar, content, and footer vertically %>
 
-        <div class="w-full max-w-md">
+                <%- include('partials/navbar.ejs') %>
+                    <%# Navbar is now a direct child and will sit at the top %>
 
-            <div class="mb-6"> <%- include('../campgrounds/partials/flash.ejs') %>
-            </div>
+                        <div class="flex-grow flex items-center justify-center">
+                            <%# This wrapper takes up available space and centers its content (flash + form) %>
 
-            <main class="p-6 bg-white rounded-2xl shadow-xl">
-                <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-8">Register for YelpCamp</h1>
+                                <div class="w-full max-w-lg">
+                                    <%# This div holds the flash messages and the main form content %>
 
-                <form action="/register" method="POST" class="space-y-6">
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                        <input type="text" id="username" name="username" placeholder="Choose a username" required
-                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
+                                        <div class="mb-6">
+                                            <%# Flash messages for server-side alerts %>
+                                                <%- include('partials/flash.ejs') %>
+                                        </div>
 
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-                        <input type="text" id="email" name="email" placeholder="enter your email" required
-                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
+                                        <main class="p-6 bg-white rounded-2xl shadow-xl">
+                                            <h2 class="text-2xl font-semibold text-gray-700 mb-4 text-center">Add a New
+                                                Campground</h2>
+                                            <form action="/campgrounds" method="POST" class="space-y-4" novalidate>
+                                                <div>
+                                                    <label for="title"
+                                                        class="block text-sm font-medium text-gray-700">Title</label>
+                                                    <input type="text" id="title" name="campground[title]"
+                                                        class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                        required>
+                                                </div>
+                                                <div>
+                                                    <label for="image"
+                                                        class="block text-sm font-medium text-gray-700">Image
+                                                        URL</label>
+                                                    <input type="text" id="image" name="campground[image]"
+                                                        class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                        required>
+                                                </div>
+                                                <div>
+                                                    <label for="description"
+                                                        class="block text-sm font-medium text-gray-700">Description</label>
+                                                    <textarea id="description" name="campground[description]"
+                                                        class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                        required></textarea>
+                                                </div>
+                                                <div>
+                                                    <label for="price"
+                                                        class="block text-sm font-medium text-gray-700">Price</label>
+                                                    <input type="number" id="price" name="campground[price]" min="0.01"
+                                                        step="0.01"
+                                                        class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                        required>
+                                                </div>
+                                                <div>
+                                                    <label for="location"
+                                                        class="block text-sm font-medium text-gray-700">Location</label>
+                                                    <input type="text" id="location" name="campground[location]"
+                                                        class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                                        required>
+                                                </div>
+                                                <button type="submit"
+                                                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition font-semibold shadow-md">
+                                                    Add Campground
+                                                </button>
+                                            </form>
+                                        </main>
+                                </div>
+                        </div>
+                        <%# End of the flex-grow content wrapper %>
 
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required
-                            class="block w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
-                    </div>
+                            <%- include('partials/footer.ejs') %>
+                                <%# Footer is now a direct child of body and will stick to the bottom %>
 
-                    <button type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition">
-                        Register
-                    </button>
-                </form>
+                                    <script>
+                                        // Your client-side validation script (remains the same)
+                                        const form = document.querySelector('form');
+                                        const errorMessage = document.createElement('div');
+                                        errorMessage.className = 'text-red-500 text-sm mt-2';
+                                        form.appendChild(errorMessage);
 
-                <p class="text-center text-sm text-gray-600 mt-6">
-                    Already have an account? <a href="/login" class="text-blue-600 hover:underline">Login here</a>.
-                </p>
-            </main>
+                                        form.addEventListener('submit', function (event) {
+                                            errorMessage.textContent = ''; // Clear previous errors
 
-        </div>
+                                            if (!form.checkValidity()) {
+                                                event.preventDefault(); // Prevent form submission if invalid
 
-    </body>
+                                                if (document.querySelector('input:invalid, textarea:invalid')) {
+                                                    const invalidElement = document.querySelector('input:invalid, textarea:invalid');
+                                                    if (invalidElement.hasAttribute('required') && !invalidElement.value) {
+                                                        errorMessage.textContent = 'All fields are required.';
+                                                    } else if (invalidElement.id === 'price' && (isNaN(invalidElement.value) || parseFloat(invalidElement.value) <= 0)) {
+                                                        errorMessage.textContent = 'Price must be a positive number.';
+                                                    } else {
+                                                        errorMessage.textContent = 'Please correct the highlighted fields.';
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    </script>
+        </body>
 
-    </html>
+        </html>

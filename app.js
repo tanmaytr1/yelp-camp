@@ -12,6 +12,7 @@ const Review = require("./models/review");
 const campgrounds = require("./routes/campground");
 const reviews = require("./routes/reviews");
 const session = require("express-session");
+const flash = require("connect-flash");
 
 // app.use(morgan("dev"));
 // app.use((req, res, next) => {
@@ -48,10 +49,16 @@ const sessionConfig = {
     }
 };
 app.use(session(sessionConfig));
-
+app.use(flash());
 // Routes
 app.get("/", (req, res) => {
   res.render("home.ejs");
+});
+
+app.use((req,res,next)=>{
+  res.locals.success = req.flash("success"); 
+  res.locals.error = req.flash("error");
+  next();
 });
 
 app.use("/campgrounds",campgrounds);

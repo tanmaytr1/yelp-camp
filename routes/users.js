@@ -14,9 +14,16 @@ router.post("/register", CatchAsync(async (req, res) => {
     const { username, email, password } = req.body; // Get user-inputted fields
     const user = new User({ username, email }); // Create a new user instance
     const registeredUser = await User.register(user, password); // Register the user with the provided password
-
-    req.flash("success", "Successfully registered!"); // Flash success message
+    req.login(registeredUser, (err) => { // Log in the user after registration
+      if (err) {
+        console.error("Login error after registration:", err);
+        req.flash("error", "Something went wrong during login. Please try again.");
+        return res.redirect("/register");
+      }
+      req.flash("success", "Successfully registered!"); // Flash success message
     res.redirect("/campgrounds"); // Redirect to the campgrounds page after registration
+    });
+    
   
 } catch (error) {
     console.error("Registration error:", error);

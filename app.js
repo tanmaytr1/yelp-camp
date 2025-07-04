@@ -9,10 +9,14 @@ const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 const morgan = require("morgan");
 const Review = require("./models/review");
-const campgrounds = require("./routes/campground");
-const reviews = require("./routes/reviews");
+const campgroundRoutes = require("./routes/campground");
+const reviewsRoutes = require("./routes/reviews");
+const userRoutes = require("./routes/users");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStratagy = require("passport-local");
+const User = require("./models/user");
 
 // app.use(morgan("dev"));
 // app.use((req, res, next) => {
@@ -50,6 +54,11 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStratagy(User.authenticate())); // Use the LocalStratagy for authentication
+passport.serializeUser(User.serializeUser()); // Serialize the user
+passport.deserializeUser(User.deserializeUser()); // Deserialize the user 
 // Routes
 app.get("/", (req, res) => {
   res.render("home.ejs");
@@ -61,8 +70,9 @@ app.use((req,res,next)=>{
   next();
 });
 
-app.use("/campgrounds",campgrounds);
-app.use("/campgrounds/:id/reviews",reviews);
+app.use("/", userRoutes); // Use the users routes
+app.use("/campgrounds",campgroundRoutes);
+app.use("/campgrounds/:id/reviews",reviewsRoutes);
 
 
 

@@ -46,7 +46,17 @@ router.get("/login", (req, res) => {
 
 router.post("/login", passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),(req, res, next) => {
     req.flash("success", "Welcome back!");
-    res.redirect("/campgrounds");
+
+    // Check if req.session.returnTo exists and use it, otherwise default to /campgrounds
+    // Passport often cleans up req.session.returnTo itself.
+    // Some setups might use res.locals.returnTo if passed from middleware.
+    const redirectUrl = req.session.returnTo || "/campgrounds";
+
+    // IMPORTANT: Delete req.session.returnTo after using it to prevent
+    // redirecting to the same page on subsequent logins
+    delete req.session.returnTo; // Ensure it's cleared
+
+    res.redirect(redirectUrl);
 });
 
 router.get("/logout", (req, res) => {

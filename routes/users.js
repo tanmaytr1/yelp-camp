@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const CatchAsync = require("../utils/catchAsync"); // Import the catchAsync function
+const passport = require("passport");
+
 
 router.get("/register", (req, res) => {
   res.render("users/register");
@@ -10,22 +12,35 @@ router.get("/register", (req, res) => {
 router.post("/register", CatchAsync(async (req, res) => {
   try{
     const { username, email, password } = req.body; // Get user-inputted fields
-  const user = new User({ username, email }); // Create a new user instance
-  const registeredUser = await User.register(user, password); // Register the user with the provided password
+    const user = new User({ username, email }); // Create a new user instance
+    const registeredUser = await User.register(user, password); // Register the user with the provided password
+
     req.flash("success", "Successfully registered!"); // Flash success message
     res.redirect("/campgrounds"); // Redirect to the campgrounds page after registration
-  }catch (error) {
-    if (error.name === 'UserExistsError') {
-            req.flash('error', 'A user with that username or email already exists.');
-            
-        } else {
-            // For other unexpected errors, provide a generic message or log the specific error
-            req.flash('error', 'Something went wrong during registration. Please try again.');
-            console.error(error); // Log the detailed error for debugging
-        }
-    res.redirect("/register"); // Redirect back to the registration page
-  }
+  
+} catch (error) {
+    console.error("Registration error:", error);
 
+    
+        if (error.name === 'UserExistsError') {
+            req.flash('error', 'A user with that username already exists.');
+        } else if (error.code === 11000 && error.message.includes('email')) {
+            req.flash('error', 'A user with that email address already exists.');
+        } else {
+            req.flash('error', 'Something went wrong during registration. Please try again.');
+        }
+        res.redirect("/register");
+    }
 }));
+
+router.get("/login", (req, res) => {
+    res.render("users/login");
+});
+
+router.post("/login", passport.authenticate('local',{failureFlash: true, failureRedirect: '/login'}),(req, res, next) => {
+    req.flash("success", "Welcome back!");
+    res.redirect("/campgrounds");
+});
+
 
 module.exports = router;

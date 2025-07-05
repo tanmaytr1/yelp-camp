@@ -3,10 +3,12 @@ const router = express.Router({mergeParams: true});
 const catchAsync = require("../utils/catchAsync"); // Import the catchAsync function
 const Campground = require("../models/campground");
 const Review = require("../models/review");
+const isLoggedIn = require("../middleware/isLoggedIn");
 
-router.post("/", catchAsync(async (req, res) => {
+router.post("/", isLoggedIn,catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id);
   const review = new Review(req.body.review); // Create a new review instance
+  review.author = req.user._id;
   campground.reviews.push(review);
   await review.save(); // Save the review to the database
   await campground.save(); // Save the campground with the new review reference

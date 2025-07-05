@@ -30,20 +30,22 @@
 
                             <!-- Edit/Delete/Back Buttons -->
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <a href="/campgrounds/<%= campground._id %>/edit"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-lg text-center transition">
-                                    ✏️ Edit
-                                </a>
-                                <form action="/campgrounds/<%= campground._id %>?_method=delete" method="POST">
-                                    <button type="submit"
-                                        class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-4 rounded-lg w-full transition">
-                                        🗑️ Delete
-                                    </button>
-                                </form>
-                                <a href="/campgrounds"
-                                    class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 px-4 rounded-lg text-center transition">
-                                    ⬅️ Back to All
-                                </a>
+                                <% if(currentUser && campground.author.equals(currentUser)){ %>
+                                    <a href="/campgrounds/<%= campground._id %>/edit"
+                                        class="bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded-lg text-center transition">
+                                        ✏️ Edit
+                                    </a>
+                                    <form action="/campgrounds/<%= campground._id %>?_method=delete" method="POST">
+                                        <button type="submit"
+                                            class="bg-red-600 hover:bg-red-700 text-white text-sm py-2 px-4 rounded-lg w-full transition">
+                                            🗑️ Delete
+                                        </button>
+                                    </form>
+                                    <% } %>
+                                        <a href="/campgrounds"
+                                            class="bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 px-4 rounded-lg text-center transition">
+                                            ⬅️ Back to All
+                                        </a>
                             </div>
 
                             <!-- Review Form (inside main box) -->
